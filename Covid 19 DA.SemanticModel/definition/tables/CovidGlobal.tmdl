@@ -1,0 +1,773 @@
+table CovidGlobal
+	lineageTag: 14d044cb-856b-44ce-8791-3b6dbb324023
+
+	measure 'Total Deaths' = SUM(CovidGlobal[New_deaths])
+		formatString: 0
+		lineageTag: 95f1fd24-3207-49b5-ab59-5dce18e63563
+
+	measure 'Total count of Cumulative cases' = ```
+			COUNT(CovidGlobal[Cumulative_cases]) 
+			```
+		formatString: 0
+		lineageTag: 22d047da-e764-4529-95ff-a232cc335863
+
+	measure 'YTD Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        DATESYTD ( 'Date'[Date] )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\To-date total\Total Deaths
+		lineageTag: 855bcac7-43bb-4e49-8130-c0452b2c70f0
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QTD Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        DATESQTD ( 'Date'[Date] )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\To-date total\Total Deaths
+		lineageTag: acb7f10d-b133-488f-a665-019265c2914b
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MTD Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        DATESMTD ( 'Date'[Date] )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\To-date total\Total Deaths
+		lineageTag: 31ac8fcf-40d3-4f84-b18a-b3051260b24a
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PY Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        CALCULATETABLE (
+			            DATEADD ( 'Date'[Date], -1, YEAR ),
+			            'Date'[DateWithTransactions] = TRUE
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 72400632-07d5-4adf-8793-df74a1566452
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'YOY Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [Total Deaths]
+			VAR __ValuePreviousPeriod = [PY Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 5dd127a4-0183-4ac8-87c3-52e7fb8e1686
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'YOY % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [YOY Total Deaths],
+			    [PY Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 4787980c-08ca-4fad-ad4c-5bc39a3b0a96
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PQ Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        CALCULATETABLE (
+			            DATEADD ( 'Date'[Date], -1, QUARTER ),
+			            'Date'[DateWithTransactions] = TRUE
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: efa23900-5c13-450e-8690-0bcd43be164a
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QOQ Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [Total Deaths]
+			VAR __ValuePreviousPeriod = [PQ Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: ff40f5c5-670a-4769-a980-5c8693c839ed
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QOQ % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [QOQ Total Deaths],
+			    [PQ Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 504770a8-f264-4175-9fd8-c529772b87c9
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PM Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        CALCULATETABLE (
+			            DATEADD ( 'Date'[Date], -1, MONTH ),
+			            'Date'[DateWithTransactions] = TRUE
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 2a9878ed-499f-4bbc-92f6-5a9a50d4438f
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MOM Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [Total Deaths]
+			VAR __ValuePreviousPeriod = [PM Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 35104aca-89de-4390-8eb7-e20c734b1606
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MOM % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [MOM Total Deaths],
+			    [PM Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Growth\Total Deaths
+		lineageTag: 9d4b471f-3668-4360-9cb8-4550870c7fef
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PYTD Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [YTD Total Deaths],
+			        CALCULATETABLE (
+			            DATEADD ( 'Date'[Date], -1, YEAR ),
+			            'Date'[DateWithTransactions] = TRUE
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: a85c50f4-6674-4a6a-b010-ba949c8fa5c0
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'YOYTD Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [YTD Total Deaths]
+			VAR __ValuePreviousPeriod = [PYTD Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: 95f54ddd-4f74-4d27-a1bb-a05adccc59a5
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'YOYTD % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [YOYTD Total Deaths],
+			    [PYTD Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: 31fdb032-6091-47a7-9cfe-7a853f271e8d
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PQTD Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [QTD Total Deaths],
+			        CALCULATETABLE (
+			            DATEADD ( 'Date'[Date], -1, QUARTER ),
+			            'Date'[DateWithTransactions] = TRUE
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: 5c4003ee-2d2b-4895-81c6-32f86d763313
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QOQTD Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [QTD Total Deaths]
+			VAR __ValuePreviousPeriod = [PQTD Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: 26349ad9-1bb0-4e50-97e4-9aa4f23c13ae
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QOQTD % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [QOQTD Total Deaths],
+			    [PQTD Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: f5aeac60-165a-4d90-9162-12ad81c54bc6
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PMTD Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [MTD Total Deaths],
+			        CALCULATETABLE (
+			            DATEADD ( 'Date'[Date], -1, MONTH ),
+			            'Date'[DateWithTransactions] = TRUE
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: e7848143-edd2-4c2e-ab7b-17d0fdd2688a
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MOMTD Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [MTD Total Deaths]
+			VAR __ValuePreviousPeriod = [PMTD Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: cb291d6e-019e-46f9-a35d-c5003213adba
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MOMTD % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [MOMTD Total Deaths],
+			    [PMTD Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\To-date growth\Total Deaths
+		lineageTag: d9c459f7-b645-411c-9be5-fae7cfab96ce
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PYC Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        PARALLELPERIOD ( 'Date'[Date], -1, YEAR )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: ab078b6d-6848-4e47-abc6-638528ee9bff
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'YTDOPY Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [YTD Total Deaths]
+			VAR __ValuePreviousPeriod = [PYC Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: 30405328-aa36-4b83-9602-4badb60d8488
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'YDTOPY % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [YTDOPY Total Deaths],
+			    [PYC Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: 4549889b-bb6e-4a0e-80c9-207b4e2a96ca
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PQC Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        PARALLELPERIOD ( 'Date'[Date], -1, QUARTER )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: 3923ed20-d849-4cea-96b6-3933f62db331
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QTDOPQ Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [QTD Total Deaths]
+			VAR __ValuePreviousPeriod = [PQC Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: dea25bb7-0416-4aa0-8125-c9cf668c087b
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'QDTOPQ % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [QTDOPQ Total Deaths],
+			    [PQC Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: f8adc698-11e3-43f2-b787-5a11b1eb85c1
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PMC Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        PARALLELPERIOD ( 'Date'[Date], -1, MONTH )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: a477803b-240d-4859-bbd0-4910c7974615
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MTDOPM Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [MTD Total Deaths]
+			VAR __ValuePreviousPeriod = [PMC Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: a0e1c61c-fa5d-4ec4-9429-d10c701ba3c8
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MTDOPM % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [MTDOPM Total Deaths],
+			    [PMC Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Growth over full period\Total Deaths
+		lineageTag: f9b9be9f-30cb-4c94-8654-cf83e7c6a970
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MAT Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [Total Deaths],
+			        DATESINPERIOD (
+			            'Date'[Date],
+			            MAX ( 'Date'[Date] ),
+			            -1,
+			            YEAR
+			        )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Moving annual growth\Total Deaths
+		lineageTag: 5d90f313-9604-4861-809c-3049762e1d2e
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'PYMAT Total Deaths' =
+			
+			IF (
+			    [_ShowValueForDates],
+			    CALCULATE (
+			        [MAT Total Deaths],
+			        DATEADD ( 'Date'[Date], -1, YEAR )
+			    )
+			)
+		formatString: 0
+		displayFolder: Time intelligence\Moving annual growth\Total Deaths
+		lineageTag: 4f05f1dd-64b8-44c1-9b83-0d72225e7fe6
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MATG Total Deaths' =
+			
+			VAR __ValueCurrentPeriod = [MAT Total Deaths]
+			VAR __ValuePreviousPeriod = [PYMAT Total Deaths]
+			VAR __Result =
+			    IF (
+			        NOT ISBLANK ( __ValueCurrentPeriod ) && NOT ISBLANK ( __ValuePreviousPeriod ),
+			        __ValueCurrentPeriod - __ValuePreviousPeriod
+			    )
+			RETURN
+			    __Result
+		formatString: 0
+		displayFolder: Time intelligence\Moving annual growth\Total Deaths
+		lineageTag: 69063a8f-dd8a-4139-8e83-08333c554928
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'MATG % Total Deaths' = ```
+			
+			DIVIDE ( 
+			    [MATG Total Deaths],
+			    [PYMAT Total Deaths]
+			)
+			```
+		formatString: 0.00%
+		displayFolder: Time intelligence\Moving annual growth\Total Deaths
+		lineageTag: 33112a1d-6755-4848-bf39-316f256010ef
+
+		annotation SQLBI_Template = TimeIntelligence
+
+		annotation SQLBI_TimeIntelligence = Standard
+
+		annotation SQLBI_CalendarType = Calendar
+
+	measure 'Total New Cases' = COUNT(CovidGlobal[New_cases])
+		formatString: 0
+		lineageTag: d1be4e38-2415-4e10-a07d-6429aa365e4d
+
+	column Date_reported
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 4e67420f-14da-4a64-a17d-01e2739a384a
+		summarizeBy: none
+		sourceColumn: Date_reported
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Country_code
+		dataType: string
+		lineageTag: 0a2811d1-d988-430d-bd40-c233a9cea16f
+		summarizeBy: none
+		sourceColumn: Country_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: eecc9deb-80a2-4af4-9720-33ebd36c5611
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column WHO_region
+		dataType: string
+		lineageTag: e7178502-0bdd-425a-98e1-b36904fd5f16
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: WHO_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column New_cases
+		dataType: int64
+		formatString: 0
+		lineageTag: 80ee9e70-1218-432f-a933-ed29b1fecb51
+		summarizeBy: sum
+		sourceColumn: New_cases
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cumulative_cases
+		dataType: int64
+		formatString: 0
+		lineageTag: c31f2c55-15d7-472a-96aa-76ba53084d07
+		summarizeBy: sum
+		sourceColumn: Cumulative_cases
+
+		annotation SummarizationSetBy = Automatic
+
+	column New_deaths
+		dataType: int64
+		formatString: 0
+		lineageTag: 02f30057-9452-42a5-bca5-16402622b470
+		summarizeBy: sum
+		sourceColumn: New_deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cumulative_deaths
+		dataType: int64
+		formatString: 0
+		lineageTag: 1fb2a42e-3a9f-401f-bdfd-ad1a801f87ad
+		summarizeBy: sum
+		sourceColumn: Cumulative_deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CovidGlobal = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\anike\Documents\GitHub\Data Sets\Covid 19\WHO-COVID-19-global-daily-data.csv"),[Delimiter=",", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date_reported", type date}, {"Country_code", type text}, {"Country", type text}, {"WHO_region", type text}, {"New_cases", Int64.Type}, {"Cumulative_cases", Int64.Type}, {"New_deaths", Int64.Type}, {"Cumulative_deaths", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

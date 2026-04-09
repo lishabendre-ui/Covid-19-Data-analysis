@@ -1,0 +1,61 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 415,
+            "y": 152
+          },
+          "nodeIndex": "CovidGlobal",
+          "nodeLineageTag": "14d044cb-856b-44ce-8791-3b6dbb324023",
+          "size": {
+            "height": 615,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 169.5
+          },
+          "nodeIndex": "Date",
+          "nodeLineageTag": "4cc6ca61-cf61-48d6-b549-06366c53cb43",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1491,
+            "y": 115.5
+          },
+          "nodeIndex": "DateAutoTemplate",
+          "nodeLineageTag": "1cda916e-be08-46b6-9659-0f091309fbef",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,4 @@
+relationship 9bf1b7a9-2464-6927-ec25-ffcb0d612ab2
+	fromColumn: CovidGlobal.Date_reported
+	toColumn: Date.Date
+

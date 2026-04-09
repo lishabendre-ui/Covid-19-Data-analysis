@@ -6,9 +6,49 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
+extendedProperty SQLBI_BRAVO_ManageDatesConfiguration =
+		{
+		  "templateUri": "file:///C:/Users/anike/AppData/Local/Bravo/.temp/ManageDates/Templates/Config-01.template.json",
+		  "isCurrent": false,
+		  "isCustom": false,
+		  "name": "Config-01",
+		  "description": "Standard gregorian calendar",
+		  "autoScan": 127,
+		  "onlyTablesColumns": [],
+		  "exceptTablesColumns": [],
+		  "isoCountry": "US",
+		  "autoNaming": 1,
+		  "targetMeasures": [
+		    "Total Deaths"
+		  ],
+		  "defaults": {
+		    "firstDayOfWeek": 1
+		  },
+		  "dateAvailable": true,
+		  "dateEnabled": true,
+		  "dateTableName": "Date",
+		  "dateTableValidation": 1,
+		  "dateReferenceTableName": "DateAutoTemplate",
+		  "dateReferenceTableValidation": 1,
+		  "holidaysAvailable": true,
+		  "holidaysEnabled": false,
+		  "holidaysTableName": "Holidays",
+		  "holidaysTableValidation": 0,
+		  "holidaysDefinitionTableName": "HolidaysDefinition",
+		  "holidaysDefinitionTableValidation": 0,
+		  "timeIntelligenceAvailable": true,
+		  "timeIntelligenceEnabled": true
+		}
+
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["CovidGlobal"]
+
+ref table CovidGlobal
+ref table DateAutoTemplate
+ref table Date
 
 ref cultureInfo en-US
 
